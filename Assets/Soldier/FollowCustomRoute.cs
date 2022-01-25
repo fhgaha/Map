@@ -2,66 +2,80 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class FollowCustomRoute : MonoBehaviour
 {
-    [SerializeField]
-    private Transform[] route;
-    private int routeToGo;
-    private float tParam;
-    private Vector2 soldierPosition;
     private float speedModifier;
     private bool coroutineAllowed;
-    private Transform[] routeFromPaths;
+    private List<Node> nodes;
+    private List<Node> path;
 
     private void Start()
     {
-        routeToGo = 0;
-        tParam = 0f;
         speedModifier = 0.25f;
         coroutineAllowed = true;
-
+        nodes = Paths.GetAllNodes();
+        path = FindPath(nodes.First(), nodes.Last());
     }
 
     private void Update()
     {
+
         if (coroutineAllowed)
             StartCoroutine(GoByRoute());
-        //StartCoroutine(GoByRouteBezier(routeToGo));
     }
 
     private IEnumerator GoByRoute()
     {
-        //var path = new Pathfinder().Path;
-        //You are trying to create a MonoBehaviour using the 'new' keyword.This is not allowed.
-        //MonoBehaviours can only be added using AddComponent(). Alternatively, your script can inherit
-        //from ScriptableObject or no base class at all
-
-        yield break;
-    }
-
-    private IEnumerator GoByRouteBezier(int routeNumber)
-    {
         coroutineAllowed = false;
 
-        var p0 = route[routeNumber].GetChild(0).position;
-        var p1 = route[routeNumber].GetChild(1).position;
-        var p2 = route[routeNumber].GetChild(2).position;
-        var p3 = route[routeNumber].GetChild(3).position;
+        var currentPoint = path.First();
+        var currentPointPos = currentPoint.transform.position;
 
-        while (tParam < 1)
+        while (true)
         {
-            tParam += Time.deltaTime * speedModifier;
-            soldierPosition = CustomRoute.GetBezierPoint(tParam, p0, p1, p2, p3);
-            transform.position = soldierPosition;
+            if (Vector2.Distance(transform.position, path.Last().transform.position) <= 0.1)
+                yield break;
+
+            if (Vector2.Distance(transform.position, currentPointPos) <= 0.1)
+                if (currentPoint != path.Last())
+                {
+                    currentPoint = path[path.IndexOf(currentPoint) + 1];
+                    currentPointPos = currentPoint.transform.position;
+                }
+
+            var moveDir = (currentPointPos - transform.position).normalized;
+            transform.position += moveDir * speedModifier * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+    }
 
-        tParam = 0f;
-        routeToGo++;
-        if (routeToGo > route.Length - 1)
-            yield break;
-        //routeToGo = 0;  //
-        coroutineAllowed = true;
+    private List<Node> FindPath(Node start, Node end)
+    {
+        var track = new Dictionary<Node, Node>();
+        track[start] = null;
+        var queue = new Queue<Node>();
+        queue.Enqueue(start);
+        while (queue.Count != 0)
+        {
+            var node = queue.Dequeue();
+            foreach (var nextNode in node.IncidentNodes)
+            {
+                if (track.ContainsKey(nextNode)) continue;
+                track[nextNode] = node;
+                queue.Enqueue(nextNode);
+            }
+            if (track.ContainsKey(end)) break;
+        }
+        var pathItem = end;
+        var result = new List<Node>();
+        while (pathItem != null)
+        {
+            result.Add(pathItem);
+            pathItem = track[pathItem];
+        }
+        result.Reverse();
+        return result;
     }
 }
