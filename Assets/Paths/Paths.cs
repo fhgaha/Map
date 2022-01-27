@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class Paths : MonoBehaviour
 {
     public static List<Node> Nodes { get; private set; }
 
-    private void Start()
+    private void OnDrawGizmos()
     {
-        Nodes = new List<Node>();
-        GetComponentsInChildren<Node>().ToList()
-            .ForEach(child => Nodes.Add(child));
+        if (Nodes == null)
+        {
+            Nodes = new List<Node>();
+            GetComponentsInChildren<Node>().ToList()
+                .ForEach(child => Nodes.Add(child));
+        }
     }
 
     /// <summary>
@@ -23,5 +27,4 @@ public class Paths : MonoBehaviour
             throw new System.ArgumentNullException("Nodes is empty");
         return Nodes;
     }
-
 }
