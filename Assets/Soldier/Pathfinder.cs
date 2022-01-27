@@ -18,7 +18,7 @@ public class Pathfinder : MonoBehaviour
     {
         if (Path.Count == 0)
         {
-            if (nodes is null) nodes = Paths.GetAllNodes();
+            //if (nodes is null) nodes = Paths.Nodes;
             Path = FindPath(nodes.First(), nodes.Last());
         }
     }

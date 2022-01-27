@@ -18,17 +18,15 @@ public class Node : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        var nodes = GetComponentInParent<Paths>().GetAllNodes();
+
         if (this.type != NodeType.Intersection)
-            IncidentNodes = GetNearestNodes(Paths.Nodes).ToList().Where(n => n != null).ToList();
-        
+            IncidentNodes = GetNearestNodes(nodes).ToList().Where(n => n != null).ToList();
+
         if (IncidentNodes != null)
         {
             foreach (Node n in IncidentNodes)
-                if (n != null)
-                    DrawArrow(transform.position, n.transform.position - transform.position, 0.05f);
-
-            if (IncidentNodes.Count > 2)
-                Gizmos.DrawIcon(transform.position, "iconName", true, Color.blue);
+                DrawArrow(transform.position, n.transform.position - transform.position, 0.05f);
         }
     }
 
@@ -45,12 +43,10 @@ public class Node : MonoBehaviour
         Node first = null;
         Node second = null;
 
-        float Dp13p14;
-
         foreach (Node n in nodes)
         {
             if (n == this) continue;
-            
+
             var currentMinDistance = Vector3.Distance(n.transform.position, transform.position);
 
             if (currentMinDistance < minDistance1)
@@ -88,7 +84,7 @@ public class Node : MonoBehaviour
         Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(-arrowHeadAngle, 0, 0) * Vector3.back;
         Vector3 up = Quaternion.LookRotation(direction) * Quaternion.Euler(0, arrowHeadAngle, 0) * Vector3.back;
         Vector3 down = Quaternion.LookRotation(direction) * Quaternion.Euler(0, -arrowHeadAngle, 0) * Vector3.back;
-        
+
         if (gizmos)
         {
             Gizmos.color = color;

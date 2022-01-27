@@ -6,25 +6,31 @@ using System;
 
 public class Paths : MonoBehaviour
 {
-    public static List<Node> Nodes { get; private set; }
+    [SerializeField]
+    private List<Node> nodes;
+
+    private void Awake()
+    {
+        GetAllNodes();
+    }
 
     private void OnDrawGizmos()
     {
-        if (Nodes == null)
-        {
-            Nodes = new List<Node>();
-            GetComponentsInChildren<Node>().ToList()
-                .ForEach(child => Nodes.Add(child));
-        }
+        GetAllNodes();
     }
 
     /// <summary>
     /// Returns all children nodes 
     /// </summary>
-    public static List<Node> GetAllNodes()
+    public List<Node> GetAllNodes()
     {
-        if (Nodes.Count == 0)
-            throw new System.ArgumentNullException("Nodes is empty");
-        return Nodes;
+        if (nodes == null)
+        {
+            nodes = new List<Node>();
+            GetComponentsInChildren<Node>().ToList()
+                .ForEach(child => nodes.Add(child));
+        }
+        return nodes;
     }
 }
+

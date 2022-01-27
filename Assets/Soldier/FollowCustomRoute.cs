@@ -8,20 +8,20 @@ public class FollowCustomRoute : MonoBehaviour
 {
     private float speedModifier;
     private bool coroutineAllowed;
-    private List<Node> nodes;
     private List<Node> path;
 
     private void Start()
     {
         speedModifier = 0.25f;
         coroutineAllowed = true;
-        nodes = Paths.GetAllNodes();
-        path = FindPath(nodes.First(), nodes.Last());
+        var nodes = GameObject.Find("Paths").GetComponent<Paths>().GetAllNodes(); //which gameObject? what if we have several object with Paths script?
+
+        var end = nodes.Where(n => n.name == "p (27)").Single();
+        path = FindPath(nodes.First(), end); 
     }
 
     private void Update()
     {
-
         if (coroutineAllowed)
             StartCoroutine(GoByRoute());
     }
