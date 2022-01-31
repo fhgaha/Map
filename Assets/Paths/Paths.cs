@@ -24,7 +24,7 @@ public class Paths : MonoBehaviour
     /// </summary>
     public List<Node> GetAllNodes()
     {
-        if (nodes == null)
+        if (nodes == null || nodes.Count != transform.childCount)
         {
             nodes = new List<Node>();
             GetComponentsInChildren<Node>().ToList()

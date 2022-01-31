@@ -2,13 +2,6 @@
 using System.Linq;
 using UnityEngine;
 
-enum NodeType
-{
-    Default,
-    Border, //should not exist in when map will be complete
-    Intersection
-}
-
 public class Node : MonoBehaviour
 {
     [SerializeField]

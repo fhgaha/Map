@@ -4,26 +4,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class FollowCustomRoute : MonoBehaviour
+public class FollowState : MonoBehaviour, ISoldierState
 {
-    private float speedModifier;
-    private bool coroutineAllowed;
+    [SerializeField] private float speedModifier;
+
+    public bool coroutineAllowed;
     private List<Node> path;
+    public event Action OnEndOfPathIsReached;
 
     private void Start()
     {
-        speedModifier = 0.25f;
-        coroutineAllowed = true;
-        var nodes = GameObject.Find("Paths").GetComponent<Paths>().GetAllNodes(); //which gameObject? what if we have several object with Paths script?
-
-        var end = nodes.Where(n => n.name == "p (27)").Single();
-        path = FindPath(nodes.First(), end); 
+        speedModifier = 1f;
+        //coroutineAllowed = false;
     }
 
     private void Update()
     {
-        if (coroutineAllowed)
-            StartCoroutine(GoByRoute());
+        //if (path != null)
+            if (coroutineAllowed)
+                StartCoroutine(GoByRoute());
+    }
+
+    public void GoToCountry(int id)
+    {
+        var countries = GameObject.Find("Countries").GetComponentsInChildren<Country>();
+        Country myCountry = GetComponentInParent<Country>();
+        Country targetCountry = countries.Single(c => c.Id == id);
+        //path = FindPath(myCountry.NearestPathNode, enemyCountry.NearestPathNode);
+        var start = GetNearestNode();
+        var end = targetCountry.NearestPathNode;
+        path = FindPath(myCountry.NearestPathNode, end);
+        coroutineAllowed = true;
+    }
+
+    private Node GetNearestNode()
+    {
+        var nodes = GameObject.Find("Paths").GetComponent<Paths>().GetAllNodes();
+        var minDistance = float.MaxValue;
+        Node nearestNode = null;
+        foreach (Node n in nodes)
+        {
+            var currentMinDistance = Vector3.Distance(n.transform.position, transform.position);
+            if (currentMinDistance < minDistance)
+            {
+                minDistance = currentMinDistance;
+                nearestNode = n;
+            }
+        }
+        return nearestNode;
     }
 
     private IEnumerator GoByRoute()
@@ -36,7 +64,11 @@ public class FollowCustomRoute : MonoBehaviour
         while (true)
         {
             if (Vector2.Distance(transform.position, path.Last().transform.position) <= 0.1)
+            {
+                path = null;
+                OnEndOfPathIsReached?.Invoke();
                 yield break;
+            }
 
             if (Vector2.Distance(transform.position, currentPointPos) <= 0.1)
                 if (currentPoint != path.Last())

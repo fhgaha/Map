@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Line : MonoBehaviour
+public class ReadOnlyInspectorAttribute : PropertyAttribute
 {
-    public Vector2 p0, p1;
+
 }
