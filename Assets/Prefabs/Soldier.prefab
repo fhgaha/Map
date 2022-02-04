@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2928682528732655722}
   - component: {fileID: 2928682528732655723}
   - component: {fileID: -3028593960673196629}
-  - component: {fileID: 2928682528732655720}
   - component: {fileID: 3147562444822019011}
+  - component: {fileID: 1900322913812883816}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Untagged
@@ -97,19 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222ef03f5a27d2b46abdd80a5f29d790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2928682528732655720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2928682528732655724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2d65674964df3142828aca36ba13e46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speedModifier: 0
+  homeCountryId: 0
+  enemyCountryId: 0
 --- !u!114 &3147562444822019011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,3 +111,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d5a0c036c92bc44b1359cf72b5009b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1900322913812883816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2928682528732655724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 568d30934c8e13d4f9bca0ac689188eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedModifier: 0
+  coroutineAllowed: 0

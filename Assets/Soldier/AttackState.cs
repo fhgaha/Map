@@ -7,7 +7,7 @@ public class AttackState : MonoBehaviour, ISoldierState
 {
     private void Start()
     {
-        GetComponent<FollowState>().OnEndOfPathIsReached += Attack;
+        GetComponent<SoldierFollower>().OnEndOfPathIsReached += Attack;
     }
 
     public void Attack()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class FollowState : MonoBehaviour, ISoldierState
+public class SoldierFollower : MonoBehaviour
 {
     [SerializeField] private float speedModifier;
 

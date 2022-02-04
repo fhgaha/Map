@@ -43,8 +43,8 @@ public class Country : MonoBehaviour
         var soldier = Instantiate(soldierPrefab, NearestPathNode.transform.position, 
             Quaternion.identity, transform);
 
-        soldier.GetComponent<SoldierStateManager>().enemyCountryId = idEnemy;
-        soldier.GetComponent<SoldierStateManager>().ChangeState(SoldierState.GoToTarget);
+        soldier.GetComponent<SoldierStateMachine>().enemyCountryId = idEnemy;
+        soldier.GetComponent<SoldierStateMachine>().ChangeState(SoldierState.GoToTarget);
         //soldier.GetComponent<FollowState>().GoToCountry(idEnemy);
     }
 
