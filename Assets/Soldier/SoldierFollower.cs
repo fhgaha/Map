@@ -25,15 +25,13 @@ public class SoldierFollower : MonoBehaviour
                 StartCoroutine(GoByRoute());
     }
 
-    public void GoToCountry(int id)
+    public void GoToTarget(int id)
     {
-        var countries = GameObject.Find("Countries").GetComponentsInChildren<Country>();
-        Country myCountry = GetComponentInParent<Country>();
-        Country targetCountry = countries.Single(c => c.Id == id);
-        //path = FindPath(myCountry.NearestPathNode, enemyCountry.NearestPathNode);
+        Country myCountry = GetComponent<Soldier>().HomeCountry;
+        Country targetCountry = GetComponent<Soldier>().Target;
         var start = GetNearestNode();
         var end = targetCountry.NearestPathNode;
-        path = FindPath(myCountry.NearestPathNode, end);
+        path = FindPath(start, end);
         coroutineAllowed = true;
     }
 

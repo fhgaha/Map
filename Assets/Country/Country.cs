@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Country : MonoBehaviour
+public class Country : MonoBehaviour, ITarget
 {
     [SerializeField] public int Id;
     [SerializeField] private GameObject soldierPrefab;
     public Node NearestPathNode;
     private Dictionary<int, CountryState> relations;
-    public event Action OnWarDeclared;
-    private bool conditionToStartWar = true;
+    public event Action<Country, Country, Vector3> OnWarDeclared;
+    private bool conditionToStartWar = false;
 
     private void Start()
     {
         FillRelations();
+        if (Id == 0) conditionToStartWar = true;
     }
 
     private void Update()
@@ -37,15 +38,14 @@ public class Country : MonoBehaviour
     public void DeclareWarOn(Country sender, int idEnemy)
     {
         conditionToStartWar = false;
-        OnWarDeclared?.Invoke();
         relations[idEnemy] = CountryState.War;
+        var cntrsParent = transform.parent;
+        var cntrs = cntrsParent.GetComponentsInChildren<Country>();
 
-        var soldier = Instantiate(soldierPrefab, NearestPathNode.transform.position, 
-            Quaternion.identity, transform);
+        var enemyCountry = cntrs
+            .Single(c => c.Id == idEnemy);
 
-        soldier.GetComponent<SoldierStateMachine>().enemyCountryId = idEnemy;
-        soldier.GetComponent<SoldierStateMachine>().ChangeState(SoldierState.GoToTarget);
-        //soldier.GetComponent<FollowState>().GoToCountry(idEnemy);
+        OnWarDeclared?.Invoke(this, enemyCountry, NearestPathNode.transform.position);
     }
 
     public void MakePeaceWith(Country sender, int id)

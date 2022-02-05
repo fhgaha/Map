@@ -24,14 +24,14 @@ public class SoldierStateMachine
         _currentState?.Tick();
     }
 
-    private void SetState(ISoldierState state)
+    public void SetState(ISoldierState state)
     {
         if (state == _currentState) return;
 
         _currentState?.OnExit();
         _currentState = state;
 
-        ///in case we cannot change current state
+        ///in case we cannot change current state?
         _transitions.TryGetValue(_currentState.GetType(), out _currentTransitions);
         if (_currentTransitions == null)
             _currentTransitions = EmptyTransitions;     ///to use EmptyTransitions is faster than creating new list

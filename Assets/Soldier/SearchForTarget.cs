@@ -2,36 +2,35 @@
 using System.Linq;
 using UnityEngine;
 
-internal class SearchForTarget: ISoldierState
+internal class SearchForTarget : ISoldierState
 {
     private Soldier soldier;
-    public int TargetId;
 
-    public SearchForTarget(Soldier soldier, int targetId)
+    public SearchForTarget(Soldier soldier)
     {
         this.soldier = soldier;
-        TargetId = targetId;
+        //soldier.Target = ChooseTarget();
     }
-    
+
     public void Tick()
     {
-        soldier.TargetCountry = ChooseTarget(TargetId);
+        //soldier.Target = ChooseTarget();
     }
 
-    private Country ChooseTarget(int targetId)
-    {
-        return GameObject.Find("Countries")
-            .GetComponentsInChildren<Country>()
-            .Single(c => c.Id == targetId);
-    }
+    //private Country ChooseTarget()
+    //{
+        //var target = GameObject.Find("Countries")
+        //    .GetComponentsInChildren<Country>()
+        //    .Where(c => c.Id == soldier.Target.Id)
+        //    .FirstOrDefault();
 
-    public void OnEnter()
-    {
-        throw new System.NotImplementedException();
-    }
+        //foreach (Country country in GameObject.Find("Countries").GetComponentsInChildren<Country>())
+        //    if (country.Id == soldier.Target.Id)
+        //        return country;
 
-    public void OnExit()
-    {
-        throw new System.NotImplementedException();
-    }
+        //return null;
+    //}
+
+    public void OnEnter() { }
+    public void OnExit() { }
 }
