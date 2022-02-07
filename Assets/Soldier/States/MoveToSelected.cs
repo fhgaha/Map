@@ -24,6 +24,8 @@
 
     public void Tick()
     {
-        //follower.GoToCountry(targetId);
+        soldier.CheckIfItsTimeToDie();
     }
+
+
 }

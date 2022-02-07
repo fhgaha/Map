@@ -6,12 +6,18 @@ using UnityEngine;
 
 public class Country : MonoBehaviour, ITarget
 {
+    public int Hp;
     [SerializeField] public int Id;
     [SerializeField] private GameObject soldierPrefab;
     public Node NearestPathNode;
     private Dictionary<int, CountryState> relations;
     public event Action<Country, Country, Vector3> OnWarDeclared;
     private bool conditionToStartWar = false;
+
+    private void Awake()
+    {
+        Hp = 5;
+    }
 
     private void Start()
     {
@@ -23,6 +29,16 @@ public class Country : MonoBehaviour, ITarget
     {
         if (conditionToStartWar)
             DeclareWarOn(this, 1);
+
+        var collider = GetComponent<PolygonCollider2D>();
+
+
+    }
+
+    private void OnTriggerStay2D(Collider2D collider)
+    {
+            //Debug.Log("ontrigg");
+        //if (collider.tag == "Soldier")
     }
 
     private void FillRelations()

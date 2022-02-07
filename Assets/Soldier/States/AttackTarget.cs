@@ -6,6 +6,7 @@ using UnityEngine;
 public class AttackTarget : ISoldierState
 {
     private Soldier soldier;
+    private float nextStrikeTime = 1;
 
     public AttackTarget(Soldier soldier)
     {
@@ -14,16 +15,22 @@ public class AttackTarget : ISoldierState
 
     public void OnEnter()
     {
-        Debug.Log("attact target on enter");
+
     }
 
     public void OnExit()
     {
-        Debug.Log("attact target on exit");
+
     }
 
     public void Tick()
     {
-        throw new System.NotImplementedException();
+        if (soldier.Target != null)
+            if (nextStrikeTime <= Time.time)
+            {
+                //strike every 2 sec
+                nextStrikeTime = Time.time + 1f;
+                soldier.StrikeTarget();
+            }
     }
 }

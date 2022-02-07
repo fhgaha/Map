@@ -15,14 +15,12 @@ public class SoldierFollower : MonoBehaviour
     private void Start()
     {
         speedModifier = 1f;
-        //coroutineAllowed = false;
     }
 
     private void Update()
     {
-        //if (path != null)
-            if (coroutineAllowed)
-                StartCoroutine(GoByRoute());
+        if (coroutineAllowed)
+            StartCoroutine(GoByRoute());
     }
 
     public void GoToTarget(int id)
@@ -61,14 +59,14 @@ public class SoldierFollower : MonoBehaviour
 
         while (true)
         {
-            if (Vector2.Distance(transform.position, path.Last().transform.position) <= 0.1)
+            if (Vector2.Distance(transform.position, path.Last().transform.position) <= 0.1f)
             {
-                path = null;
+                //path = null;
                 OnEndOfPathIsReached?.Invoke();
                 yield break;
             }
 
-            if (Vector2.Distance(transform.position, currentPointPos) <= 0.1)
+            if (Vector2.Distance(transform.position, currentPointPos) <= 0.1f)
                 if (currentPoint != path.Last())
                 {
                     currentPoint = path[path.IndexOf(currentPoint) + 1];
